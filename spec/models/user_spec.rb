@@ -39,7 +39,7 @@ require 'spec_helper'
 		end
 	end
 	
-		it "should reject invalid email addresses" do
+	it "should reject invalid email addresses" do
 		addresses = %w[user@foo,com user_at_foo.org first.last@foo.]
 		addresses.each do |address|
 			invalid_email_user = User.new(@attr.merge(:email => address))
