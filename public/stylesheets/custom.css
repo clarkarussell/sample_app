@@ -46,6 +46,9 @@ a:visited {
 
 nav {
 	float: right;
+}
+
+nav {
 	background: white;
 	padding: 0 0.7em;
 	white-space: nowrap;
@@ -112,7 +115,6 @@ footer nav {
 	float: none;
 }
 
-
 /* User show page */
 
 table.profile {
@@ -135,4 +137,8 @@ td.sidebar {
 .profile img.gravatar {
 	border: 1px solid #999
 	margin-bottom: -15px;
+}
+
+div.field, div.actions {
+	margin-bottom: 10px;
 }
