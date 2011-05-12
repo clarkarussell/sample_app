@@ -14,8 +14,12 @@ class UsersController < ApplicationController
 	end
 
   def new
-  	@user = User.new
-  	@title = "Sign up"
+		if signed_in?
+			redirect_to root_path 
+		else
+			@user = User.new
+  		@title = "Sign up"
+		end
   end
 
 	def create
@@ -45,7 +49,7 @@ class UsersController < ApplicationController
 	end
 
 	def destroy
-		User.find(params[:id]).destroy
+		@user.destroy
 		redirect_to users_path, :flash => {:success => "User destroyed."}		
 	end
 
@@ -61,8 +65,8 @@ class UsersController < ApplicationController
 		end
 
 		def admin_user
-			user = User.find(params[:id])
-			redirect_to(root_path) unless current_user.admin? && !current_user?(user)
+			@user = User.find(params[:id])
+			redirect_to(root_path) unless current_user.admin? && !current_user?(@user)
 		end
 
 end

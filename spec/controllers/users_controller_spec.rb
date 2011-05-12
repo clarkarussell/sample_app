@@ -110,39 +110,52 @@ describe UsersController do
 
   describe "GET 'new'" do
 
-    it "should be successful" do
-      get :new
-      response.should be_success
-    end
-   
-    it "should have the right title" do
-    	get :new
-    	response.should have_selector("title", :content => "Sign up")
-    end
-    
-    it "should have a name field" do
-			get :new
-			response.should have_selector('input', :name => "user[name]")
+		describe "for signed in users" do
+		
+			it "should not be sucessful" do
+				@user = Factory(:user)
+				test_sign_in(@user)
+				get :new
+				response.should redirect_to(root_path)
+			end
 		end
+
+		describe "for non-signed in users" do
+		
+		  it "should be successful" do
+		    get :new
+		    response.should be_success
+		  end
+		 
+		  it "should have the right title" do
+		  	get :new
+		  	response.should have_selector("title", :content => "Sign up")
+		  end
+		  
+		  it "should have a name field" do
+				get :new
+				response.should have_selector('input', :name => "user[name]")
+			end
 				
-		it "should have an email field" do
-			get :new
-			response.should have_selector('input', :name => "user[email]")
-		end	
+			it "should have an email field" do
+				get :new
+				response.should have_selector('input', :name => "user[email]")
+			end	
 
-		it "should have a password field" do
-			get :new
-			response.should have_selector('input', :name => "user[password]")
-		end	
+			it "should have a password field" do
+				get :new
+				response.should have_selector('input', :name => "user[password]")
+			end	
 
-		it "should have a password confirmation field" do
-			get :new
-			response.should have_selector('input', :name => "user[password_confirmation]")
-		end
+			it "should have a password confirmation field" do
+				get :new
+				response.should have_selector('input', :name => "user[password_confirmation]")
+			end
 
-		it "should have a submit button" do
-			get :new
-			response.should have_selector('input', :id => "user_submit")
+			it "should have a submit button" do
+				get :new
+				response.should have_selector('input', :id => "user_submit")
+			end
 		end
   end
   
