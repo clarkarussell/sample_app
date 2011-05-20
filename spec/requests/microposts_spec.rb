@@ -37,5 +37,17 @@ describe "Microposts" do
 			end
 		end
 	end
+
+	it "should be paginated" do
+		content = "Lorem ipsum dolor sit amet"
+		visit root_path
+		35.times do
+			fill_in :micropost_content, :with => content
+			click_button
+			visit root_path
+		end
+		response.should have_selector("a", :href => "/?page=2",
+																 			 :content => "2")
+	end
 end
 

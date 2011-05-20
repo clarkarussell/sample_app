@@ -15,7 +15,42 @@ describe MicropostsController do
 			response.should redirect_to(signin_path)
 		end
 	end
+
+	describe "sidebar" do
+
+		before(:each) do
+			 @user = test_sign_in(Factory(:user))
+			 @attr1 = { :content => "Lorem ipsum dolor sit amet"}
+			 @attr2 = { :content => "I hope that this test works!"}
+		end
 	
+		it "should have a user name" do
+			post :create
+			response.should have_selector('span', :content => @user.name)
+		end
+	
+		it "should have a gravatar" do
+			post :create
+			response.should have_selector('img', :class => "gravatar")
+		end	
+
+		it "should have a micropost count" do
+			post :create
+			response.should have_selector('span', :class => "microposts")
+		end
+		
+		it "should pluralize micropost count" do
+			post :create
+			response.should have_selector('span', :content => "0 microposts")
+			post :create, :micropost => @attr1
+			post :create
+			response.should have_selector('span', :content => "1 micropost")
+			post :create, :micropost => @attr2
+			post :create
+			response.should have_selector('span', :content => "2 microposts")
+		end
+	end
+
 	describe "POST 'create'" do
 	
 	  before(:each) do
@@ -58,7 +93,7 @@ describe MicropostsController do
 			end
 
 			it "should have a flash success message" do
-				post:create, :micropost => @attr
+				post :create, :micropost => @attr
 				flash[:success].should =~ /micropost created/i
 			end
 		
@@ -95,9 +130,7 @@ describe MicropostsController do
 					flash[:success].should =~ /deleted/i
 					response.should redirect_to(root_path)
 				end.should change(Micropost, :count).by(-1)
-			end
-		
+			end	
 		end
 	end
-
 end
